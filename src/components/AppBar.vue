@@ -1,9 +1,15 @@
 <template>
   <div>
-    <v-app-bar color="deep-purple accent-4" dark>
+    <v-app-bar color="cyan darken-4" dark>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Page title</v-toolbar-title>
+      <v-tabs align-with-title>
+        <v-tab>
+          <router-link tag="li" to="/">All Drinks</router-link>
+        </v-tab>
+        <v-tab>
+          <router-link tag="li" to="/adddrink">Add a drink</router-link>
+        </v-tab>
+      </v-tabs>
 
       <v-spacer></v-spacer>
 
@@ -38,5 +44,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+li {
+  list-style-type: none;
+}
 </style>
