@@ -1,28 +1,19 @@
 <template>
-  <div id="index">
-    <router-view></router-view>
+  <div id="AllDrinks">
     <v-container>
       <v-row>
-        <v-card
-          v-for="(drink, i) in drinks"
-          :key="i"
-          class="mx-auto"
-          max-width="344"
-          outlined
-        >
+        <v-card v-for="(drink, i) in drinks" :key="i" class="mx-auto" max-width="344" outlined>
           <v-list-item three-line>
             <v-list-item-content>
-              <span class="material-icons delete" @click="delDrink(drink.id)"
-                >delete_forever</span
-              >
-              <v-list-item-title class="headline mb-1">{{
+              <span class="material-icons delete" @click="delDrink(drink.id)">delete_forever</span>
+              <v-list-item-title class="headline mb-1">
+                {{
                 drink.title
-              }}</v-list-item-title>
+                }}
+              </v-list-item-title>
 
               <ul>
-                <li v-for="(ingredient, i) in drink.ingredients" :key="i">
-                  {{ ingredient }}
-                </li>
+                <li v-for="(ingredient, i) in drink.ingredients" :key="i">{{ ingredient }}</li>
               </ul>
             </v-list-item-content>
           </v-list-item>
@@ -35,7 +26,7 @@
 <script>
 import db from "../firebase";
 export default {
-  name: "Index",
+  name: "AllDrinks",
   data() {
     return {
       drinks: []
@@ -43,7 +34,6 @@ export default {
   },
   methods: {
     delDrink(id) {
-      console.log(id);
       db.collection("drinks")
         .doc(id)
         .delete()
@@ -63,7 +53,6 @@ export default {
       .get()
       .then(data => {
         data.forEach(el => {
-          console.log(el.data(), el.id);
           let drink = {};
           drink.title = el.data().title;
           drink.slug = el.data().slug;
