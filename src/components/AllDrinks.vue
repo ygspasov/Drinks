@@ -6,6 +6,9 @@
           <v-list-item three-line>
             <v-list-item-content>
               <span class="material-icons delete" @click="delDrink(drink.id)">delete_forever</span>
+              <span class="material-icons edit">
+                <router-link :to="{name:'EditDrink',params:{slug:drink.slug}}">edit</router-link>
+              </span>
               <v-list-item-title class="headline mb-1">
                 {{
                 drink.title
@@ -32,6 +35,7 @@ export default {
       drinks: []
     };
   },
+
   methods: {
     delDrink(id) {
       db.collection("drinks")
@@ -73,12 +77,20 @@ ul {
   list-style: none;
   padding: 0;
 }
-#index .delete {
+#AllDrinks .delete,
+#AllDrinks .edit {
   position: absolute;
   top: 15px;
   right: 5px;
   font-size: 200%;
   cursor: pointer;
-  color: #aaa;
+  color: #006064;
+}
+#AllDrinks .edit {
+  top: 50px;
+}
+#AllDrinks .edit a {
+  color: #006064;
+  text-decoration: none;
 }
 </style>

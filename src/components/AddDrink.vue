@@ -3,15 +3,9 @@
     <v-row>
       <h2>Add a new drink recipe</h2>
     </v-row>
-    <v-row></v-row>
     <v-row align="center">
       <v-form ref="form" id="addForm">
-        <v-text-field
-          v-model="title"
-          label="Title"
-          required
-          @keyup="checkTitle"
-        ></v-text-field>
+        <v-text-field v-model="title" label="Title" required @keyup="checkTitle"></v-text-field>
         <div v-if="titleReply">
           <p style="color:red">{{ titleReply }}</p>
         </div>
@@ -28,9 +22,7 @@
           <p style="color:red">{{ ingredientReply }}</p>
         </div>
 
-        <v-btn color="cyan darken-4 white--text" class="mr-4" @click="AddDrink"
-          >Add</v-btn
-        >
+        <v-btn color="cyan darken-4 white--text" class="mr-4" @click="AddDrink">Add</v-btn>
       </v-form>
       {{ this.ingredients }}
     </v-row>

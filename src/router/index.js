@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import AddDrink from "../components/AddDrink.vue";
 import AllDrinks from "../components/AllDrinks.vue";
+import EditDrink from "../components/EditDrink.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +16,11 @@ const routes = [
     path: "/adddrink",
     name: "AddDrink",
     component: AddDrink
+  },
+  {
+    path: "/editdrink/:slug",
+    name: "EditDrink",
+    component: EditDrink
   },
   {
     path: "/about",
