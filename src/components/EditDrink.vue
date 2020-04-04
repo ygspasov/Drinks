@@ -9,16 +9,16 @@
         <div v-if="titleReply">
           <p style="color:red">{{ titleReply }}</p>
         </div>
-        <div v-for="(ingredient, i) in drink.ingredients" :key="i">
+        <div class="ingredient" v-for="(ingredient, i) in drink.ingredients" :key="i">
           <v-text-field v-model="drink.ingredients[i]"></v-text-field>
+
           <span class="material-icons delete" @click="delDrink(ingredient)">delete_forever</span>
         </div>
-        <v-text-field
-          v-model="oneMoreIng"
-          @keydown.tab.prevent="editIngredient"
-          label="Ingredient"
-          required
-        ></v-text-field>
+        <div class="last-ingredient">
+          <v-text-field v-model="oneMoreIng" label="Ingredient" required></v-text-field>
+          <span @click="addIngredient" class="material-icons add">add_box</span>
+        </div>
+
         <div v-if="ingredientReply">
           <p style="color:red">{{ ingredientReply }}</p>
         </div>
@@ -31,6 +31,7 @@
 
 <script>
 import db from "../firebase";
+import slugify from "slugify";
 export default {
   name: "editIngredient",
   data() {
@@ -59,7 +60,7 @@ export default {
   },
   methods: {
     checkTitle() {
-      !this.title
+      !this.drink.title
         ? (this.titleReply = "You must name the recipe")
         : (this.titleReply = "");
     },
@@ -68,7 +69,7 @@ export default {
         return ing != ingredient;
       });
     },
-    editIngredient() {
+    addIngredient() {
       if (this.oneMoreIng) {
         this.drink.ingredients.push(this.oneMoreIng);
         this.oneMoreIng = "";
@@ -77,7 +78,29 @@ export default {
       }
     },
     editDrink() {
-      console.log(this.drink.title, this.drink.ingredients);
+      if (this.drink.title) {
+        this.drink.slug = slugify(this.drink.title, {
+          replacement: "-",
+          remove: /[$*+~.()'"!:@]/g,
+          lower: true
+        });
+        db.collection("drinks")
+          .doc(this.id)
+          .update({
+            title: this.drink.title,
+            slug: this.drink.slug,
+            ingredients: this.drink.ingredients
+          })
+          .then(() => {
+            console.log("Document successfully written!");
+            this.$router.push("/");
+          })
+          .catch(error => {
+            console.error("Error writing document: ", error);
+          });
+      } else {
+        this.checkTitle();
+      }
     }
   }
 };
@@ -87,17 +110,23 @@ export default {
 h2,
 #editForm {
   margin: 0 auto;
+  width: 100%;
+  max-width: 350px;
 }
 * {
   color: #006064;
 }
-/* #editIngredients .delete,
-#editIngredients .edit {
+#editIngredients .ingredient,
+#editIngredients .last-ingredient {
+  position: relative;
+}
+#editIngredients .delete,
+#editIngredients .add {
   position: absolute;
   top: 15px;
-  right: 5px;
+  right: -35px;
   font-size: 200%;
   cursor: pointer;
   color: #006064;
-} */
+}
 </style>
